@@ -20,7 +20,8 @@ const btnCalculateBMI = document.getElementById('calculate-bmi-btn');
 const sidebarElement = document.getElementById('sidebar');
 const sidebarTitleElement = document.getElementById('sidebar-title');
 // Global variables
-const petArr = JSON.parse(getFromStorage('petArr')) ?? [];
+let petArr = JSON.parse(getFromStorage('petArr')) ?? [];
+const breedArr = JSON.parse(getFromStorage('breedArr')) ?? [];
 let healthyCheck = false;
 /*-------------------------
    FUNCTIONS
@@ -142,7 +143,7 @@ const clearInput = function () {
   checkboxDewormed.checked = false;
   checkboxSterilized.checked = false;
 };
-console.log(petArr);
+
 // Render table data function
 const renderTableData = function (petArr) {
   // Delete existing data
@@ -182,8 +183,7 @@ const renderTableData = function (petArr) {
     tableBodyElement.appendChild(row);
   }
 };
-// Render table when load
-renderTableData(petArr);
+
 // Delete pet function
 // Input: pet id
 const deletePet = function (petId) {
@@ -195,6 +195,7 @@ const deletePet = function (petId) {
     // Delete pet and save to local storage
     petArr.splice(petIndex, 1);
     saveToStorage('petArr', JSON.stringify(petArr));
+    petArr = JSON.parse(getFromStorage('petArr')) ?? [];
     // Rerender table
     renderTableData(petArr);
   }
@@ -219,6 +220,32 @@ const calculateBMI = function (petArr) {
     }
   }
 };
+// Add breed to select breed function
+// input: array of breed object
+const renderBreed = function (breedArr) {
+  // clear select option
+  selectBreed.innerHTML = '';
+  // add first select option
+  const firstOption = document.createElement('option');
+  firstOption.innerHTML = `<option value="">Select Breed</option>`;
+  selectBreed.appendChild(firstOption);
+  // add other options
+  for (let i = 0; i < breedArr.length; i++) {
+    // create new option
+    const newOption = document.createElement('option');
+    // add data to option
+    newOption.innerHTML = `<option value="${breedArr[i].name}">${breedArr[i].name}</option>`;
+    // add option to select
+    selectBreed.appendChild(newOption);
+  }
+};
+const init = function () {
+  // Render table when load
+  renderTableData(petArr);
+  // Load breed data to select
+  renderBreed(breedArr);
+};
+init();
 /*-------------------------
    HANDLE EVENTS
 ---------------------------*/
@@ -232,6 +259,7 @@ btnSubmit.addEventListener('click', function () {
     // Add pet object to pet array and save to local storage
     petArr.push(petObject);
     saveToStorage('petArr', JSON.stringify(petArr));
+    petArr = JSON.parse(getFromStorage('petArr'));
     // Clear input
     clearInput();
     // Display pet data
@@ -262,4 +290,18 @@ btnCalculateBMI.addEventListener('click', function () {
 sidebarTitleElement.style.cursor = 'pointer';
 sidebarTitleElement.addEventListener('click', function () {
   sidebarElement.classList.toggle('active');
+});
+// Handle select type on change event
+const breedOfDogList = breedArr.filter(breed => breed.type === 'Dog');
+const breedOfCatList = breedArr.filter(breed => breed.type === 'Cat');
+selectType.addEventListener('change', function () {
+  const type = selectType.value;
+
+  if (type === 'Dog') {
+    renderBreed(breedOfDogList);
+  } else if (type === 'Cat') {
+    renderBreed(breedOfCatList);
+  } else {
+    renderBreed(breedArr);
+  }
 });

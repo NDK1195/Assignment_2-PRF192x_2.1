@@ -44,7 +44,7 @@ const getDataFromInput = function () {
     type: '',
   };
 
-  breedObj.id = breedArr.length + 1;
+  breedObj.id = Date.now() + '';
   breedObj.name = inputBreedEle.value.trim();
   breedObj.type = selectTypeEle.value;
 
@@ -74,7 +74,7 @@ const deleteBreed = function (breedId) {
   // confirm before delete
   if (confirm('Are you sure?')) {
     // find breed index to delete
-    const breedIndex = breedArr.findIndex(breedObj => breedObj.id === Number(breedId));
+    const breedIndex = breedArr.findIndex(breedObj => breedObj.id === breedId);
 
     // delete breed from array and save to local storage
     breedArr.splice(breedIndex, 1);

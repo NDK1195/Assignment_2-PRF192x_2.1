@@ -221,6 +221,7 @@ btnSubmit.addEventListener('click', function () {
     // Edit pet object and save to local storage
     editPet(petObject);
     saveToStorage('petArr', JSON.stringify(petArr));
+    alert('Edit successfully');
     // Clear input and hide form
     clearInput();
     containerFormEle.classList.add('hide');

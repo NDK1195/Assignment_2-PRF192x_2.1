@@ -195,7 +195,6 @@ const deletePet = function (petId) {
     // Delete pet and save to local storage
     petArr.splice(petIndex, 1);
     saveToStorage('petArr', JSON.stringify(petArr));
-    petArr = JSON.parse(getFromStorage('petArr')) ?? [];
     // Rerender table
     renderTableData(petArr);
   }
@@ -227,14 +226,16 @@ const renderBreed = function (breedArr) {
   selectBreed.innerHTML = '';
   // add first select option
   const firstOption = document.createElement('option');
-  firstOption.innerHTML = `<option value="">Select Breed</option>`;
+  firstOption.value = '';
+  firstOption.text = 'Select Breed';
   selectBreed.appendChild(firstOption);
   // add other options
   for (let i = 0; i < breedArr.length; i++) {
     // create new option
     const newOption = document.createElement('option');
     // add data to option
-    newOption.innerHTML = `<option value="${breedArr[i].name}">${breedArr[i].name}</option>`;
+    newOption.value = breedArr[i].name;
+    newOption.text = breedArr[i].name;
     // add option to select
     selectBreed.appendChild(newOption);
   }
@@ -259,7 +260,6 @@ btnSubmit.addEventListener('click', function () {
     // Add pet object to pet array and save to local storage
     petArr.push(petObject);
     saveToStorage('petArr', JSON.stringify(petArr));
-    petArr = JSON.parse(getFromStorage('petArr'));
     // Clear input
     clearInput();
     // Display pet data

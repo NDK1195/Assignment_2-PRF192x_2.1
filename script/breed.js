@@ -5,8 +5,12 @@ const selectTypeEle = document.getElementById('input-type');
 const breedTableBodyEle = document.getElementById('tbody');
 
 const btnSubmit = document.getElementById('submit-btn');
+
+const sidebarElement = document.getElementById('sidebar');
+const sidebarTitleElement = document.getElementById('sidebar-title');
 // Global variables
 let breedArr = JSON.parse(getFromStorage('breedArr')) ?? [];
+
 /*-------------------------
    FUNCTIONS
 ---------------------------*/
@@ -79,7 +83,6 @@ const deleteBreed = function (breedId) {
     // delete breed from array and save to local storage
     breedArr.splice(breedIndex, 1);
     saveToStorage('breedArr', JSON.stringify(breedArr));
-    breedArr = JSON.parse(getFromStorage('breedArr'));
     // rerender table
     renderBreedTable(breedArr);
   }
@@ -103,11 +106,14 @@ btnSubmit.addEventListener('click', function (e) {
     // add breed obj to breed array and save to local storage
     breedArr.push(breedObj);
     saveToStorage('breedArr', JSON.stringify(breedArr));
-    breedArr = JSON.parse(getFromStorage('breedArr'));
 
     clearInput();
     // render data to table
     renderBreedTable(breedArr);
   }
 });
-console.log(breedArr);
+// Handle sidebar click event
+sidebarTitleElement.style.cursor = 'pointer';
+sidebarTitleElement.addEventListener('click', function () {
+  sidebarElement.classList.toggle('active');
+});

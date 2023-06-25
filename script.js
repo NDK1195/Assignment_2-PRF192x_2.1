@@ -240,6 +240,17 @@ const renderBreed = function (breedArr) {
     selectBreed.appendChild(newOption);
   }
 };
+// Render breed option by type function
+// Input: breed's type
+const renderBreedByType = function (type) {
+  if (type === 'Dog') {
+    renderBreed(breedOfDogList);
+  } else if (type === 'Cat') {
+    renderBreed(breedOfCatList);
+  } else {
+    renderBreed(breedArr);
+  }
+};
 const init = function () {
   // Render table when load
   renderTableData(petArr);
@@ -296,12 +307,5 @@ const breedOfDogList = breedArr.filter(breed => breed.type === 'Dog');
 const breedOfCatList = breedArr.filter(breed => breed.type === 'Cat');
 selectType.addEventListener('change', function () {
   const type = selectType.value;
-
-  if (type === 'Dog') {
-    renderBreed(breedOfDogList);
-  } else if (type === 'Cat') {
-    renderBreed(breedOfCatList);
-  } else {
-    renderBreed(breedArr);
-  }
+  renderBreedByType(type);
 });

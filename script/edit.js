@@ -21,6 +21,8 @@ const sidebarTitleElement = document.getElementById('sidebar-title');
 // Global variables
 let petArr = JSON.parse(getFromStorage('petArr')) ?? [];
 const breedArr = JSON.parse(getFromStorage('breedArr')) ?? [];
+const breedOfDogList = breedArr.filter(breed => breed.type === 'Dog');
+const breedOfCatList = breedArr.filter(breed => breed.type === 'Cat');
 /*-------------------------
    FUNCTIONS
 ---------------------------*/
@@ -149,7 +151,17 @@ const renderTableData = function (petArr) {
     tableBodyElement.appendChild(row);
   }
 };
-
+// Render breed option by type function
+// Input: breed's type
+const renderBreedByType = function (type) {
+  if (type === 'Dog') {
+    renderBreed(breedOfDogList);
+  } else if (type === 'Cat') {
+    renderBreed(breedOfCatList);
+  } else {
+    renderBreed(breedArr);
+  }
+};
 // show pet data on form by pet id function
 // Input: pet id
 const startEditPet = function (petId) {
@@ -158,6 +170,7 @@ const startEditPet = function (petId) {
   inputID.value = petObject.id;
   inputName.value = petObject.name;
   inputAge.value = petObject.age;
+  renderBreedByType(petObject.type);
   selectType.value = petObject.type;
   inputWeight.value = petObject.weight;
   inputLength.value = petObject.length;
@@ -236,16 +249,7 @@ sidebarTitleElement.addEventListener('click', function () {
   sidebarElement.classList.toggle('active');
 });
 // Handle select type on change event
-const breedOfDogList = breedArr.filter(breed => breed.type === 'Dog');
-const breedOfCatList = breedArr.filter(breed => breed.type === 'Cat');
 selectType.addEventListener('change', function () {
   const type = selectType.value;
-  console.log(type);
-  if (type === 'Dog') {
-    renderBreed(breedOfDogList);
-  } else if (type === 'Cat') {
-    renderBreed(breedOfCatList);
-  } else {
-    renderBreed(breedArr);
-  }
+  renderBreedByType(type);
 });
